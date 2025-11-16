@@ -13,7 +13,7 @@ export default function MyAttendancePage() {
     const studentID = sessionStorage.getItem("studentID");
     if (!studentID) return;
 
-    fetch(`http://localhost:5000/attendx/my-attendance/${studentID}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/attendx/my-attendance/${studentID}`)
       .then((res) => res.json())
       .then((data) => setAttendanceData(data.data))
       .catch((err) => console.error(err));
