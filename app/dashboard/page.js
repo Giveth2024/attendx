@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 
 // Custom Hex Colors defined in the original Tailwind config/styles
@@ -26,7 +26,7 @@ const glowTextStyle = {
 const hoverGlowClass = `transition-all duration-200 ease-in-out hover:transform hover:-translate-y-0.5 hover:shadow-[0_0_20px_2px_${HOVER_GLOW_COLOR}]`;
 
 // Mock Data
-const USER_NAME = 'Giveth';
+// const USER_NAME = 'Giveth';
 const ATTENDANCE_PERCENT = 85;
 const SCHEDULE = [
   {
@@ -60,6 +60,32 @@ const SCHEDULE = [
 
 export default function Dashboard() {
   const [attendance, setAttendance] = useState(ATTENDANCE_PERCENT); // State could be used to simulate real-time updates
+  const [studentName, setStudentName] = useState("");
+
+  // Fetch student name from backend
+  const fetchStudentName = async () => {
+    try {
+      const studentID = sessionStorage.getItem("studentID");
+      if (!studentID) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/attendx/profile?studentID=${studentID}`
+      );
+
+      const data = await res.json();
+
+      if (data?.full_name) {
+        setStudentName(data.full_name);
+      }
+    } catch (error) {
+      console.error("Error fetching student name:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentName();
+  }, []);
+
 
   // Calculate SVG Circle Dash Offset for the progress ring
   const progressOffset = useMemo(() => {
@@ -82,7 +108,10 @@ export default function Dashboard() {
               <main className="mt-8 px-4 md:px-10">
                 {/* Page Heading */}
                 <div className="flex flex-wrap justify-between gap-3 p-4">
-                  <p className="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] min-w-72">Welcome, {USER_NAME}!</p>
+                  <p className="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] min-w-72">
+                    Welcome, {studentName || "Student"}!
+                  </p>
+
                 </div>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
