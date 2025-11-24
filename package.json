@@ -11,12 +11,14 @@
   "dependencies": {
     "@zxing/browser": "^0.1.5",
     "axios": "^1.13.2",
+    "crypto-js": "^4.2.0",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.553.0",
     "next": "16.0.2",
     "qrcode.react": "^4.2.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "ua-parser-js": "^2.0.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
